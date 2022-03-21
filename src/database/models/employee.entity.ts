@@ -8,10 +8,10 @@ export class Employee {
   @Column({ nullable: false })
   name: string
 
-  @Column({type: 'bigint' , width: 11, unique: true, nullable: false})
+  @Column({ type: 'bigint', unique: true, nullable: false})
   cpf: number
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   email: string
 
   @Column({ nullable: false })
