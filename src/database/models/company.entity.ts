@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('companies')
 export class Company {
@@ -13,4 +13,10 @@ export class Company {
 
   @Column({ nullable: false })
   address: string
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: string
+
+  @UpdateDateColumn({ name: 'updated_at '})
+  updatedAt: string
 }
