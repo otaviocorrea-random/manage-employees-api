@@ -1,10 +1,9 @@
-const path = require('path');
-
 module.exports = {
   "type": "postgres",
   "url": process.env.DATABASE_URL,
-  "entities": [path.resolve(__dirname, 'src', 'database', 'models', '*')],
-  "migrations": [path.resolve(__dirname, 'src', 'database', 'migrations', '*')],
+  "synchronize": true,
+  "entities": ['dist/**/database/models/*.entity{.ts,.js}'],
+  "migrations":  ['dist/**/database/migrations/**/*{.ts,.js}'],
   "cli": {
     "migrationsDir": `${__dirname}/src/database/migrations`,
     "entitiesDir": `${__dirname}/src/database/models`
