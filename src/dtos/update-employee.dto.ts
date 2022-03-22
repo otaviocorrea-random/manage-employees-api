@@ -1,21 +1,22 @@
 import { IsEmail,IsNumberString, IsOptional, IsString, Length} from "class-validator";
 
-export class CreateEmployeeDTO{
+export class UpdateEmployeeDTO{
   @IsString()
   @Length(1, 255)
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @IsNumberString()
   @Length(11, 11)
-  cpf: string;
+  @IsOptional()
+  cpf?: string;
 
   @IsEmail()
-  email: string;
+  @IsOptional()
+  email?: string;
 
   @IsString()
   @Length(1, 255)
-  address: string;
-
   @IsOptional()
-  companies?: {id: string}[]
+  address?: string;
 }

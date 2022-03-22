@@ -21,7 +21,7 @@ export class CompanyService {
 
   async getOne(id: string): Promise<{ data: Company }> {
     let company = await this.model.findOne({ where: { id }, relations: ['employees'] });
-    if(!company){console.log("entrou"); throw new NotFoundException(`Company not found`);};
+    if(!company){throw new NotFoundException(`Company not found`);};
     return { data: company } ;
   }
 
@@ -38,16 +38,6 @@ export class CompanyService {
     return this.getOne(id);
   }
 
-  // async update(id: string, { companies, ...params }): Promise<{ data: Employee }> {
-  //   let newEmployee = this.model.create(params);
-  //   newEmployee.companies = companies.map((id) => ({ id } as Company));
-  //   newEmployee.id = id;
-   
-  //   let employee = await this.model.save(newEmployee)
-
-  //   return { data: employee };
-  // }
-
   async delete(id: string): Promise<{ data: string }>{
     let company = await this.model.findOne({ where: { id } });
     if(!company){console.log("entrou"); throw new NotFoundException(`Company not found`);};
@@ -55,13 +45,30 @@ export class CompanyService {
     return { data: `${company.name} successfully removed!!!`}
   }
 
-  async addEmployee(companyId:string, employeeId:string): Promise<{ message: string }>{
+  async addEmployees(companyId:string, { employees, ...params }): Promise<{ message: string }>{
+    console.log(employees)
+    let employee = null;
     let company = await this.model.findOne({ where: { id: companyId }, relations: ['employees'] });
-    let employee = await this.employee.findOne({ where: { id: employeeId }})
-    company.employees = [...company.employees, employee]
-    console.log(company.employees)
+
+    employees.forEach(async (emp:{id:string}) => {
+      employee = await this.employee.findOne({ where: { id: emp.id }})
+      if(employee) company.employees = [...company.employees, employee]
+    });
+   
     this.model.save(company)
     
-    return { message: "ok"}
+    return { message: "Employees added successfully!!!"}
+  }
+
+  async removeEmployees(companyId:string, { employees, ...params }): Promise<{ message: string }>{
+    let company = await this.model.findOne({ where: { id: companyId }, relations: ['employees'] });
+
+    employees.forEach(async (employee:{id:string}) => {
+      company.employees = company.employees.filter( e => {return e.id != employee.id })
+    });
+   
+    this.model.save(company)
+    
+    return { message: "Employees removed successfully!!!"}
   }
 }

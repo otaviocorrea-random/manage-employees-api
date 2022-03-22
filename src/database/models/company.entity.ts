@@ -9,8 +9,8 @@ export class Company {
   @Column({ nullable: false })
   name: string
 
-  @Column({ type: 'bigint' , unique: true, nullable: false })
-  cnpj: number
+  @Column({ length: 14, unique: true, nullable: false })
+  cnpj: string
 
   @Column({ nullable: false })
   address: string

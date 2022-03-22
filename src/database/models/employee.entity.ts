@@ -9,8 +9,8 @@ export class Employee {
   @Column({ nullable: false })
   name: string
 
-  @Column({ type: 'bigint', unique: true, nullable: false})
-  cpf: number
+  @Column({ length: 11, unique: true, nullable: false})
+  cpf: string
 
   @Column({ nullable: false, unique: true })
   email: string

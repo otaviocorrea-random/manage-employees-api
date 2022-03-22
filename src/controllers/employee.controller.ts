@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
 import { CreateEmployeeDTO } from "../dtos/create-employee.dto";
+import { UpdateEmployeeDTO } from "../dtos/update-employee.dto";
 import { EmployeeService } from "../services/employee.service";
 
 @Controller('/employee')
@@ -22,7 +23,7 @@ export class EmployeeController {
   }
   
   @Put(':id')
-  public update(@Param('id') id:string, @Body() body: CreateEmployeeDTO): any {
+  public update(@Param('id') id:string, @Body() body: UpdateEmployeeDTO): any {
     return this.employeeService.update(id, body);
   }
 
