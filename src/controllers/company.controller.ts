@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
+import { CompanyAddEmployeesDTO } from "../dtos/company-add-employees.dto";
 import { CreateCompanyDTO } from "../dtos/create-company.dto";
 import { CompanyService } from "../services/company.service";
 
@@ -29,5 +30,15 @@ export class CompanyController {
   @Delete(':id')
   public delete(@Param('id') id:string): any {
     return this.companyService.delete(id);
+  }
+
+  @Post(':id/employee/add')
+  public addEmployee(@Param('id') id:string, @Body() body: CompanyAddEmployeesDTO): any {
+    return this.companyService.addEmployees(id, body)
+  }
+
+  @Delete(':id/employee/remove')
+  public removeEmployee(@Param('id') id:string, @Body() body: CompanyAddEmployeesDTO): any {
+    return this.companyService.removeEmployees(id, body)
   }
 }

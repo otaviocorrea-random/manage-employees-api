@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn  } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany } from "typeorm";
+import { Company } from './company.entity';
 
 @Entity('employees')
 export class Employee {
@@ -8,8 +9,8 @@ export class Employee {
   @Column({ nullable: false })
   name: string
 
-  @Column({ type: 'bigint', unique: true, nullable: false})
-  cpf: number
+  @Column({ length: 11, unique: true, nullable: false})
+  cpf: string
 
   @Column({ nullable: false, unique: true })
   email: string
@@ -22,4 +23,9 @@ export class Employee {
 
   @UpdateDateColumn({ name: 'updated_at '})
   updatedAt: string
+
+  @ManyToMany(() => Company, (company: Company) => company.employees)
+  companies: Company[];
 }
+
+export default Employee;

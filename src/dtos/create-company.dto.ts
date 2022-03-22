@@ -1,14 +1,18 @@
-import { IsInt, IsString, Length } from "class-validator";
+import { IsNumberString, IsString, Length, IsOptional } from "class-validator";
 
 export class CreateCompanyDTO{
   @IsString()
   @Length(1, 255)
   name: string;
 
-  @IsInt()
-  cnpj: number;
+  @IsNumberString()
+  @Length(14, 14)
+  cnpj: string;
 
   @IsString()
   @Length(1, 255)
   address: string;
+
+  @IsOptional()
+  employees?: {id: string}[]
 }
