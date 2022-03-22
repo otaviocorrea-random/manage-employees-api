@@ -7,5 +7,6 @@ module.exports = {
   "cli": {
     "migrationsDir": `${__dirname}/src/database/migrations`,
     "entitiesDir": `${__dirname}/src/database/models`
-  }
+  },
+  "logging": ["query", "error"]
 }

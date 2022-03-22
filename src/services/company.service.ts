@@ -13,7 +13,7 @@ export class CompanyService {
   }
 
   async getOne(id: string): Promise<{ data: Company }> {
-    let company = await this.model.findOne({ where: { id } });
+    let company = await this.model.findOne({ where: { id }, relations: ['employees'] });
     if(!company){console.log("entrou"); throw new NotFoundException(`Company not found`);};
     return { data: company } ;
   }
@@ -24,6 +24,7 @@ export class CompanyService {
   }
 
   async update(id: string, params: object): Promise<{ data: Company }> {
+    console.log(params)
     let company = await this.model.findOne({ where: { id } });
     if(!company){console.log("entrou"); throw new NotFoundException(`Company not found`);};
     await this.model.update({ id }, params);

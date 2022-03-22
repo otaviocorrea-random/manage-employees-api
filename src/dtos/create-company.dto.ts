@@ -11,4 +11,6 @@ export class CreateCompanyDTO{
   @IsString()
   @Length(1, 255)
   address: string;
+
+  employees?: []
 }

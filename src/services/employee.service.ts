@@ -13,7 +13,7 @@ export class EmployeeService {
   }
 
   async getOne(id: string): Promise<{ data: Employee }> {
-    let employee = await this.model.findOne({ where: { id } });
+    let employee = await this.model.findOne({ where: { id }, relations: ['companies'] });
     if(!employee){console.log("entrou"); throw new NotFoundException(`Employee not found`);};
     return { data: employee } ;
   }

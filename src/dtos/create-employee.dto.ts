@@ -14,4 +14,6 @@ export class CreateEmployeeDTO{
   @IsString()
   @Length(1, 255)
   address: string;
+
+  companies?: []
 }
