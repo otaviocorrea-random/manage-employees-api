@@ -15,5 +15,5 @@ export class CreateEmployeeDTO{
   @Length(1, 255)
   address: string;
 
-  companies?: []
+  companies: {id: string}[]
 }

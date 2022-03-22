@@ -30,4 +30,9 @@ export class CompanyController {
   public delete(@Param('id') id:string): any {
     return this.companyService.delete(id);
   }
+
+  @Get('tes/te')
+  public testessss(): any {
+    return this.companyService.addEmployee("228f5775-51e0-4c23-b65e-7c83aa19aeda", "b971a249-bf2f-4075-940f-e4702b1e7aa6")
+  }
 }
