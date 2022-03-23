@@ -35,11 +35,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm install
-      - run: npm run build --if-present
-      - run: npm run test
-      - run: echo "database"
-      - run: echo $DATABASE_URL
+        run: npm install
+        run: npm run build --if-present
+        run: npm run test
+        run: echo "database"
+        run: echo "$POSTGRES_PASSWORD $DATABASE_URL"
 
   #deploy: ## <-- this is the new stuff
   #  needs: build
