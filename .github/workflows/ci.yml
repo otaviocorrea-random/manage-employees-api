@@ -26,12 +26,12 @@ jobs:
     steps:
       - env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-      - uses: actions/checkout@v2
       - name: Use Node.js
-      - uses: actions/setup-node@v2
-      - run: npm install
-      - run: npm run build --if-present
-      - run: npm run test
+        uses: actions/checkout@v2
+        uses: actions/setup-node@v2
+        run: npm install
+        run: npm run build --if-present
+        run: npm run test
 
 
   #deploy: ## <-- this is the new stuff
