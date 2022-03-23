@@ -26,6 +26,7 @@ jobs:
     steps:
       - env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      - name: Use Node.js
       - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v2
