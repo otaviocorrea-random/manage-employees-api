@@ -1,5 +1,8 @@
 name: Node.js CI
 
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+
 on:
   push:
     branches: [ main, tests ]
@@ -27,17 +30,16 @@ jobs:
 
     steps:
      
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: DATABASE_URL="postgres://postgres:postgres@localhost:5432/postgres"
-      - run: npm install
-      - run: npm run build --if-present
-      - run: npm run test
-      - run: echo "database"
+      # - uses: actions/checkout@v2
+      # - name: Use Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      #     cache: 'npm'
+      # - run: npm install
+      # - run: npm run build --if-present
+      # - run: npm run test
+      # - run: echo "database"
       - run: echo "$POSTGRES_PASSWORD $DATABASE_URL"
 
   #deploy: ## <-- this is the new stuff
