@@ -2,13 +2,15 @@ name: Node.js CI
 
 on:
   push:
-    branches: [main, tests]
+    branches: [ main, tests ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:lts-alpine3.14
+    strategy:
+      matrix:
+        node-version: [16.x]
 
     services:
       postgres:
@@ -22,18 +24,17 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
+          
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
-      uses: actions/setup-node@v2
-      - name: Run tests
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-      run: npm install
-      run: npm run build --if-present
-      run: npm run test
-
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build --if-present
+      - run: npm run test
 
   #deploy: ## <-- this is the new stuff
   #  needs: build
