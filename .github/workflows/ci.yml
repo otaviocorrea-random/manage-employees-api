@@ -24,14 +24,14 @@ jobs:
           - 5432:5432
 
     steps:
-      - env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-      - name: Use Node.js
-        uses: actions/checkout@v2
-        uses: actions/setup-node@v2
-        run: npm install
-        run: npm run build --if-present
-        run: npm run test
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      name: Use Node.js
+      uses: actions/checkout@v2
+      uses: actions/setup-node@v2
+      run: npm install
+      run: npm run build --if-present
+      run: npm run test
 
 
   #deploy: ## <-- this is the new stuff
