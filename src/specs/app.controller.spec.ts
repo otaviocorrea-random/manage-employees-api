@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
-console.log("@@@@@",process.env.DATABASE_URL);
+
 describe('AppController', () => {
   let appController: AppController;
 
@@ -15,7 +15,7 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
+    it('should return a link to documentation', () => {
       expect(appController.getHello()).toBe('<a href=\"/doc\">View API Documentation</a>');
     });
   });
