@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-       run: npm install && npm run build --if-present && npm run test && echo "database" && echo "$POSTGRES_PASSWORD $DATABASE_URL"
+        run: npm install && npm run build --if-present && npm run test && echo "database" && echo "$POSTGRES_PASSWORD $DATABASE_URL"
       #run: npm run build --if-present
       #run: npm run test
       #run: echo "database"
