@@ -39,7 +39,7 @@ jobs:
       - run: npm run build --if-present
       - run: npm run test
       - run: echo "database"
-      - run: echo DATABASE_URL
+      - run: echo $DATABASE_URL
 
   #deploy: ## <-- this is the new stuff
   #  needs: build
