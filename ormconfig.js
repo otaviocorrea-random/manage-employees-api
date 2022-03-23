@@ -5,8 +5,8 @@ module.exports = {
   "entities": ['dist/**/database/models/*.entity{.ts,.js}'],
   "migrations":  ['dist/**/database/migrations/**/*{.ts,.js}'],
   "cli": {
-    "migrationsDir": `${__dirname}/src/database/migrations`,
-    "entitiesDir": `${__dirname}/src/database/models`
+    "migrationsDir": `src/database/migrations`,
+    "entitiesDir": `src/database/models`
   },
   "logging": ["query", "error"]
 }

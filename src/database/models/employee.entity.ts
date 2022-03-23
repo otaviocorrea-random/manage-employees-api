@@ -24,7 +24,7 @@ export class Employee {
   @UpdateDateColumn({ name: 'updated_at '})
   updatedAt: string
 
-  @ManyToMany(() => Company, (company: Company) => company.employees)
+  @ManyToMany(() => Company, (company: Company) => company.employees, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   companies: Company[];
 }
 
