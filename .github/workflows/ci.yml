@@ -29,12 +29,11 @@ jobs:
      
       - uses: actions/checkout@v2
       - name: Use Node.js
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - run: DATABASE_URL="postgres://postgres:postgres@localhost:5432/postgres"
       - run: npm install
       - run: npm run build --if-present
       - run: npm run test
