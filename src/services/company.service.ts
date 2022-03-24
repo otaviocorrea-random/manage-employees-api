@@ -67,7 +67,7 @@ export class CompanyService {
 
   async addEmployees(
     companyId: string,
-    { employees, ...params },
+    { employees },
   ): Promise<{ message: string }> {
     let employee = null;
     const company = await this.model.findOne({
@@ -88,7 +88,7 @@ export class CompanyService {
 
   async removeEmployees(
     companyId: string,
-    { employees, ...params }: CompanyAddEmployeesDTO,
+    { employees }: CompanyAddEmployeesDTO,
   ): Promise<{ message: string }> {
     const company = await this.model.findOne({
       where: { id: companyId },
