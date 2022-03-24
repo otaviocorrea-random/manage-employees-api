@@ -9,7 +9,10 @@ module.exports = {
     entitiesDir: `src/database/entities`,
   },
   extra: {
-    ssl: process.env.NODE_ENV == 'production' || false,
+    ssl:
+      process.env.NODE_ENV == 'production'
+        ? { rejectUnauthorized: false }
+        : false,
   },
   logging: ['query', 'error'],
 };
