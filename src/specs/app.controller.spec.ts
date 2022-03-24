@@ -16,7 +16,9 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return a link to documentation', () => {
-      expect(appController.getHello()).toBe('<a href=\"/doc\">View API Documentation</a>');
+      expect(appController.getHello()).toBe(
+        '<a href="/doc">View API Documentation</a>',
+      );
     });
   });
 });
