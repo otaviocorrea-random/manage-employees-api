@@ -8,5 +8,8 @@ module.exports = {
     migrationsDir: `src/database/migrations`,
     entitiesDir: `src/database/entities`,
   },
+  extra: {
+    ssl: process.env.NODE_ENV == 'production' || false,
+  },
   logging: ['query', 'error'],
 };
