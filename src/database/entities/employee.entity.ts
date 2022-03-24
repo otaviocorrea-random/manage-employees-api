@@ -26,6 +26,16 @@ export class Employee {
 
   @ManyToMany(() => Company, (company: Company) => company.employees, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   companies: Company[];
+
+  constructor(employee?: Partial<Employee>) {
+    this.id = employee?.id;
+    this.name = employee?.name;
+    this.cpf = employee?.cpf;
+    this.email = employee?.email;
+    this.createdAt = employee?.createdAt;
+    this.updatedAt = employee?.updatedAt;
+    this.companies = employee?.companies;
+  }
 }
 
 export default Employee;

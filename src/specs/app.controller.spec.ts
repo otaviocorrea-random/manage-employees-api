@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './controllers/app.controller';
-import { AppService } from './services/app.service';
+import { AppController } from '../controllers/app.controller';
+import { AppService } from '../services/app.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -15,8 +15,10 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return a link to documentation', () => {
+      expect(appController.getHello()).toBe(
+        '<a href="/doc">View API Documentation</a>',
+      );
     });
   });
 });

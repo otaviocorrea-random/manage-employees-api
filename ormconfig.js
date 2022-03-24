@@ -1,12 +1,18 @@
 module.exports = {
-  "type": "postgres",
-  "url": process.env.DATABASE_URL,
-  "synchronize": false,
-  "entities": ['dist/**/database/models/*.entity{.ts,.js}'],
-  "migrations":  ['dist/**/database/migrations/**/*{.ts,.js}'],
-  "cli": {
-    "migrationsDir": `src/database/migrations`,
-    "entitiesDir": `src/database/models`
+  type: 'postgres',
+  url: process.env.DATABASE_URL,
+  synchronize: false,
+  entities: ['dist/**/database/entities/*.entity{.ts,.js}'],
+  migrations: ['dist/**/database/migrations/**/*{.ts,.js}'],
+  cli: {
+    migrationsDir: `src/database/migrations`,
+    entitiesDir: `src/database/entities`,
   },
-  "logging": ["query", "error"]
-}
+  extra: {
+    ssl:
+      process.env.NODE_ENV == 'production'
+        ? { rejectUnauthorized: false }
+        : false,
+  },
+  logging: ['query', 'error'],
+};
