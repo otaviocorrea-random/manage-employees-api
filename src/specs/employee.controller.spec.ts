@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import Employee from '../database/models/employee.entity';
+import Employee from '../database/entities/employee.entity';
 import * as request from 'supertest';
 import { EmployeeController } from '../controllers/employee.controller';
 import { EmployeeService } from '../services/employee.service';

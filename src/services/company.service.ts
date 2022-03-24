@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Company } from '../database/models/company.entity';
-import Employee from '../database/models/employee.entity';
+import { Company } from '../database/entities/company.entity';
+import Employee from '../database/entities/employee.entity';
+import { CreateCompanyDTO, UpdateCompanyDTO, CompanyAddEmployeesDTO } from 'src/dtos/company.dto';
 
 @Injectable()
 export class CompanyService {
@@ -25,13 +26,15 @@ export class CompanyService {
     return { data: company } ;
   }
 
-  async create(params): Promise<{ data: Company }> {
+  async create(params:CreateCompanyDTO): Promise<{ data: Company }> {
+    const { cnpj } = params;
+    const companyExists = await this.model.findOne({where: {cnpj}});
+    if(companyExists) throw new ConflictException('There is already an company with the "cnpj" provided');
     const company = await this.model.save(params);    
     return { data: company };
   }
 
-  async update(id: string, params: object): Promise<{ data: Company }> {
-    console.log(params)
+  async update(id: string, params:UpdateCompanyDTO): Promise<{ data: Company }> {
     const company = await this.model.findOne({ where: { id } });
     if(!company) throw new NotFoundException(`Company not found`);
     await this.model.update({ id }, params);
@@ -46,25 +49,26 @@ export class CompanyService {
   }
 
   async addEmployees(companyId:string, { employees, ...params }): Promise<{ message: string }>{
-    console.log(employees)
     let employee = null;
     const company = await this.model.findOne({ where: { id: companyId }, relations: ['employees'] });
+    if(!company) throw new NotFoundException(`Company not found`);
 
-    employees.forEach(async (emp:{id:string}) => {
+    await employees.forEach(async (emp:{id:string}) => {
       employee = await this.employee.findOne({ where: { id: emp.id }})
-      if(employee) company.employees = [...company.employees, employee]
+      if(employee) company.employees = [...company.employees, employee];
     });
-   
-    this.model.save(company)
+
+    await this.model.save(company)
     
     return { message: "Employees added successfully!!!"}
   }
 
-  async removeEmployees(companyId:string, { employees, ...params }): Promise<{ message: string }>{
+  async removeEmployees(companyId:string, { employees, ...params }:CompanyAddEmployeesDTO): Promise<{ message: string }>{
     const company = await this.model.findOne({ where: { id: companyId }, relations: ['employees'] });
+    if(!company) throw new NotFoundException(`Company not found`);
     const employeesToRemove:string[] = employees.map((e: {id:string}) => (e.id));
     company.employees = company.employees.filter( e => !employeesToRemove.includes(e.id))
-    this.model.save(company)
+    await this.model.save(company)
     return { message: "Employees removed successfully!!!"}
   }
 }

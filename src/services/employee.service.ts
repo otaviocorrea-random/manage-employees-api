@@ -1,9 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateEmployeeDTO } from '../dtos/create-employee.dto';
-import { UpdateEmployeeDTO } from '../dtos/update-employee.dto';
+import { CreateEmployeeDTO, UpdateEmployeeDTO } from '../dtos/employee.dto';
 import { Repository } from 'typeorm';
-import { Employee } from '../database/models/employee.entity';
+import { Employee } from '../database/entities/employee.entity';
 
 @Injectable()
 export class EmployeeService {
@@ -21,12 +20,9 @@ export class EmployeeService {
   }
 
   async create(params: CreateEmployeeDTO): Promise<{ data: Employee }> {
-    const {email, cpf} = params;
-    const test = await this.model.findOne({where: [ {email}, {cpf} ]});
-    if (test) {
-      throw new NotFoundException('AAAAAAAAAAAA')
-    }
-   
+    const { email, cpf } = params;
+    const employeeExists = await this.model.findOne({where: [ {email}, {cpf} ]});
+    if(employeeExists) throw new ConflictException('There is already an employee with the "name" or "cpf" provided');
     const employee = await this.model.save(params);    
     return { data: employee };
   }
