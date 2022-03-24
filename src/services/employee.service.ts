@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateEmployeeDTO } from 'src/dtos/update-employee.dto';
+import { CreateEmployeeDTO } from '../dtos/create-employee.dto';
+import { UpdateEmployeeDTO } from '../dtos/update-employee.dto';
 import { Repository } from 'typeorm';
 import { Employee } from '../database/models/employee.entity';
 
@@ -9,31 +10,37 @@ export class EmployeeService {
   constructor(@InjectRepository(Employee) private model: Repository<Employee>){}
 
   async listAll(): Promise<{ data: Employee[] }> {
-    let list = await this.model.find();
+    const list = await this.model.find();
     return { data: list };
   }
 
   async getOne(id: string): Promise<{ data: Employee }> {
-    let employee = await this.model.findOne({ where: { id }, relations: ['companies'] });
-    if(!employee){console.log("entrou"); throw new NotFoundException(`Employee not found`);};
+    const employee = await this.model.findOne({ where: { id }, relations: ['companies'] });
+    if(!employee) throw new NotFoundException(`Employee not found`);
     return { data: employee } ;
   }
 
-  async create(params): Promise<{ data: Employee }> {
-    let employee = await this.model.save(params);    
+  async create(params: CreateEmployeeDTO): Promise<{ data: Employee }> {
+    const {email, cpf} = params;
+    const test = await this.model.findOne({where: [ {email}, {cpf} ]});
+    if (test) {
+      throw new NotFoundException('AAAAAAAAAAAA')
+    }
+   
+    const employee = await this.model.save(params);    
     return { data: employee };
   }
 
   async update(id: string, params: UpdateEmployeeDTO): Promise<{ data: Employee }> {
-    let employee = await this.model.findOne({ where: { id } });
-    if(!employee){console.log("entrou"); throw new NotFoundException(`Employee not found`);};
+    const employee = await this.model.findOne({ where: { id } });
+    if(!employee) throw new NotFoundException(`Employee not found`);
     await this.model.update({ id }, params);
     return this.getOne(id);
   }
 
   async delete(id: string): Promise<{ data: string }>{
-    let employee = await this.model.findOne({ where: { id } });
-    if(!employee){console.log("entrou"); throw new NotFoundException(`Employee not found`);};
+    const employee = await this.model.findOne({ where: { id } });
+    if(!employee) throw new NotFoundException(`Employee not found`); 
     await this.model.delete({ id });
     return { data: `${employee.name} successfully removed!!!`}
   }
