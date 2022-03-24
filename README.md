@@ -23,7 +23,7 @@ $ npm install
 $ npm run build
 
 # run migrations
-$ npm run typeorm migrations:run
+$ npm run typeorm migration:run
 ```
 
 
