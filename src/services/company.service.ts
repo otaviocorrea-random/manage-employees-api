@@ -12,6 +12,7 @@ import {
   UpdateCompanyDTO,
   CompanyAddEmployeesDTO,
 } from '../dtos/company.dto';
+import { ParamsValidator } from '../dtos/params.dto';
 
 @Injectable()
 export class CompanyService {
@@ -28,7 +29,8 @@ export class CompanyService {
     return { data: list };
   }
 
-  async getOne(id: string): Promise<{ data: Company }> {
+  async getOne(params: ParamsValidator): Promise<{ data: Company }> {
+    const { id } = params;
     const company = await this.model.findOne({
       where: { id },
       relations: ['employees'],
@@ -37,28 +39,30 @@ export class CompanyService {
     return { data: company };
   }
 
-  async create(params: CreateCompanyDTO): Promise<{ data: Company }> {
-    const { cnpj } = params;
+  async create(data: CreateCompanyDTO): Promise<{ data: Company }> {
+    const { cnpj } = data;
     const companyExists = await this.model.findOne({ where: { cnpj } });
     if (companyExists)
       throw new ConflictException(
         'There is already an company with the "cnpj" provided',
       );
-    const company = await this.model.save(params);
+    const company = await this.model.save(data);
     return { data: company };
   }
 
   async update(
-    id: string,
-    params: UpdateCompanyDTO,
+    params: ParamsValidator,
+    data: UpdateCompanyDTO,
   ): Promise<{ data: Company }> {
+    const { id } = params;
     const company = await this.model.findOne({ where: { id } });
     if (!company) throw new NotFoundException(`Company not found`);
-    await this.model.update({ id }, params);
-    return this.getOne(id);
+    await this.model.update({ id }, data);
+    return this.getOne({ id });
   }
 
-  async delete(id: string): Promise<{ data: string }> {
+  async delete(params: ParamsValidator): Promise<{ data: string }> {
+    const { id } = params;
     const company = await this.model.findOne({ where: { id } });
     if (!company) throw new NotFoundException(`Company not found`);
     await this.model.delete({ id });
@@ -66,9 +70,10 @@ export class CompanyService {
   }
 
   async addEmployees(
-    companyId: string,
+    params: ParamsValidator,
     { employees },
   ): Promise<{ message: string }> {
+    const companyId = params.id;
     let employee = null;
     const company = await this.model.findOne({
       where: { id: companyId },
@@ -87,9 +92,10 @@ export class CompanyService {
   }
 
   async removeEmployees(
-    companyId: string,
+    params: ParamsValidator,
     { employees }: CompanyAddEmployeesDTO,
   ): Promise<{ message: string }> {
+    const companyId = params.id;
     const company = await this.model.findOne({
       where: { id: companyId },
       relations: ['employees'],
