@@ -49,10 +49,3 @@ $ npm run test
 # test coverage
 $ npm run test:cov
 ```
-
-## ToDo
-> The current tests correctly cover only the parameters passed to the controller methods, so you should create tests that are more suitable for the entire application in general
-
-- [ ] Make more suitable unit tests
-- [ ] Do integration tests
-- [ ] Review all tests and see if they have good code coverage
