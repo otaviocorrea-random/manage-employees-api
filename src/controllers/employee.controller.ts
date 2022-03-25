@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ParamsValidator } from '../dtos/params.dto';
 import { CreateEmployeeDTO, UpdateEmployeeDTO } from '../dtos/employee.dto';
 import { EmployeeService } from '../services/employee.service';
 
@@ -24,8 +25,8 @@ export class EmployeeController {
 
   @Get(':id')
   @ApiOperation({ summary: 'View data for a specific employee' })
-  public show(@Param('id') id: string): any {
-    return this.employeeService.getOne(id);
+  public show(@Param() params: ParamsValidator): any {
+    return this.employeeService.getOne(params);
   }
 
   @Post()
@@ -36,13 +37,16 @@ export class EmployeeController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update employee data' })
-  public update(@Param('id') id: string, @Body() body: UpdateEmployeeDTO): any {
-    return this.employeeService.update(id, body);
+  public update(
+    @Param() params: ParamsValidator,
+    @Body() body: UpdateEmployeeDTO,
+  ): any {
+    return this.employeeService.update(params, body);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete employee data' })
-  public delete(@Param('id') id: string): any {
-    return this.employeeService.delete(id);
+  public delete(@Param() params: ParamsValidator): any {
+    return this.employeeService.delete(params);
   }
 }

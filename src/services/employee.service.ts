@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEmployeeDTO, UpdateEmployeeDTO } from '../dtos/employee.dto';
 import { Repository } from 'typeorm';
 import { Employee } from '../database/entities/employee.entity';
+import { ParamsValidator } from '../dtos/params.dto';
 
 @Injectable()
 export class EmployeeService {
@@ -19,7 +20,8 @@ export class EmployeeService {
     return { data: list };
   }
 
-  async getOne(id: string): Promise<{ data: Employee }> {
+  async getOne(params: ParamsValidator): Promise<{ data: Employee }> {
+    const { id } = params;
     const employee = await this.model.findOne({
       where: { id },
       relations: ['companies'],
@@ -28,8 +30,8 @@ export class EmployeeService {
     return { data: employee };
   }
 
-  async create(params: CreateEmployeeDTO): Promise<{ data: Employee }> {
-    const { email, cpf } = params;
+  async create(data: CreateEmployeeDTO): Promise<{ data: Employee }> {
+    const { email, cpf } = data;
     const employeeExists = await this.model.findOne({
       where: [{ email }, { cpf }],
     });
@@ -37,21 +39,23 @@ export class EmployeeService {
       throw new ConflictException(
         'There is already an employee with the "name" or "cpf" provided',
       );
-    const employee = await this.model.save(params);
+    const employee = await this.model.save(data);
     return { data: employee };
   }
 
   async update(
-    id: string,
-    params: UpdateEmployeeDTO,
+    params: ParamsValidator,
+    data: UpdateEmployeeDTO,
   ): Promise<{ data: Employee }> {
+    const { id } = params;
     const employee = await this.model.findOne({ where: { id } });
     if (!employee) throw new NotFoundException(`Employee not found`);
-    await this.model.update({ id }, params);
-    return this.getOne(id);
+    await this.model.update({ id }, data);
+    return this.getOne({ id });
   }
 
-  async delete(id: string): Promise<{ data: string }> {
+  async delete(params: ParamsValidator): Promise<{ data: string }> {
+    const { id } = params;
     const employee = await this.model.findOne({ where: { id } });
     if (!employee) throw new NotFoundException(`Employee not found`);
     await this.model.delete({ id });
