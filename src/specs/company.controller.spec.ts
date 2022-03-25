@@ -52,12 +52,12 @@ describe('AppController', () => {
 
   describe('.show', () => {
     it('shold return a company entity', async () => {
-      const result = await companyController.show("703d2d63-a4ff-4121-af79-123a76cf0f52");
+      const result = await companyController.show({ id: "703d2d63-a4ff-4121-af79-123a76cf0f52" });
       expect(result).toEqual(companiesList[0]);
     });
 
     it('shold not return a company entity', async () => {
-      const result = await companyController.show("703d2d63-a4ff-4121-af79-123a76cf0f52");
+      const result = await companyController.show({ id: "703d2d63-a4ff-4121-af79-123a76cf0f52" });
       expect(result).not.toEqual('ERROR!!!');
     });
   });
@@ -71,7 +71,7 @@ describe('AppController', () => {
 
   describe('.delete', () => {
     it('shold remove a company entity', async () => {
-      const result = await companyController.delete("703d2d63-a4ff-4121-af79-123a76cf0f52");
+      const result = await companyController.delete({ id: "703d2d63-a4ff-4121-af79-123a76cf0f52" });
       expect(result).toEqual({ message: 'success!' });
     });
   });

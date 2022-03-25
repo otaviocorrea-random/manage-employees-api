@@ -54,12 +54,12 @@ describe('AppController', () => {
 
   describe('.show', () => {
     it('shold return a employee entity', async () => {
-      const result = await employeeController.show("703d2d63-a4ff-4121-af79-123a76cf0f52");
+      const result = await employeeController.show({ id: "703d2d63-a4ff-4121-af79-123a76cf0f52" });
       expect(result).toEqual(employeesList[0]);
     });
 
     it('shold not return a employee entity', async () => {
-      const result = await employeeController.show("703d2d63-a4ff-4121-af79-123a76cf0f52");
+      const result = await employeeController.show({ id: "703d2d63-a4ff-4121-af79-123a76cf0f52" });
       expect(result).not.toEqual('ERROR!!!');
     });
   });
@@ -73,7 +73,7 @@ describe('AppController', () => {
 
   describe('.delete', () => {
     it('shold remove a employee entity', async () => {
-      const result = await employeeController.delete("703d2d63-a4ff-4121-af79-123a76cf0f52");
+      const result = await employeeController.delete({ id: "703d2d63-a4ff-4121-af79-123a76cf0f52" });
       expect(result).toEqual({ message: 'success!' });
     });
   });
